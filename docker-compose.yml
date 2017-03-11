@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  gocdserver:
+    image: gocd/gocd-server
+    ports:
+      - "8153:8153"
+      - "8154:8154"
+    environment:
+      AGENT_KEY: '123456789abcdef'
+
+  gocdagent1:
+    image: gocd/gocd-agent
+    links:
+      - gocdserver
+    depends_on:
+      - 'gocdserver'
+    environment:
+      AGENT_KEY: '123456789abcdef'
+      GO_SERVER: gocdserver
+      GO_SERVER_PORT: 8154
+
+  gocdagent2:
+    image: gocd/gocd-agent
+    links:
+      - gocdserver
+    depends_on:
+      - 'gocdserver'
+    environment:
+      AGENT_KEY: '123456789abcdef'
+      GO_SERVER: gocdserver
+      GO_SERVER_PORT: 8154
